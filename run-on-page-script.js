@@ -1,7 +1,7 @@
 $(document).ready(function () {
 	console.log('EXTENSION running on page')
 	
-	if (window.location.href.indexOf('linkedin') > -1) {
+	if (window.location.href.indexOf('search') > -1) {
 		console.log('on linkedin - stimulating click');
 		
 		var addFirstConnection = function(){
@@ -46,5 +46,52 @@ $(document).ready(function () {
 		addFirstConnection();
 		
 	}
+	
+	var scrollDownLots = function(){
+		var $target = $('html,body');
+		$target.animate({scrollTop: $target.height()}, 1000);
+	}
+	
+	var findWordRecruitAndAdd = function(keyword){
+		var elements = $('.mn-person-info__occupation:contains('+ keyword + ')')
+		elements.each(function( index ) {
+			 var parent = $( this ).parents('.mn-person-info');
+			 var connectBtn =  parent.find('.button-secondary-small');
+			 connectBtn.trigger('click');
+			 connectBtn.html('Sent invite');
+			 //connectBtn.prop("disabled", true);
+		});
+		//var element = elements.eq(0).parents('.mn-person-info')
+		//element.find('.button-secondary-small').trigger('click')
+	}
+	
+	var scrollDownTimes = function(times){
+		var i = 0;
+		setInterval(function(){
+			if(i < times){
+				scrollDownLots();
+				i++;
+			} else {
+				findWordRecruitAndAdd('Recruit');
+				findWordRecruitAndAdd('Recruitment');
+				findWordRecruitAndAdd('Recruiter');
+				findWordRecruitAndAdd('Talent');
+			}
+		}, 1000)
+	}
+	
+	if (window.location.href.indexOf('mynetwork') > -1) {
+		console.log('on mynetwork page - scrolling and looking for boxes with "recruit" in them');
+		
+		scrollDownTimes(10);
+		
+		// repeat every 45 seconds
+		setInterval(function(){
+			scrollDownTimes(10);
+		}, (45 * 1000))
+		
+	}
+	
+	
 });
 
