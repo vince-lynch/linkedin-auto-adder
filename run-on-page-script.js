@@ -1,19 +1,64 @@
+console.log('outside of document.ready');
+
 $(document).ready(function () {
-	console.log('EXTENSION running on page')
+	console.log('EXTENSION running on page');
+	var onProfilePage = false;
+	
+	
+	if(window.location.href.indexOf('/in/') > -1){
+
+		console.log('window is on profile page of someone who is not a connection');
+		
+		setTimeout(function(){
+			$('button.pv-s-profile-actions__overflow-toggle.pv-top-card-section__inline-overflow-button.button-secondary-large-muted.mh1').click();
+			console.log('ran this line of code');
+			setTimeout(function(){
+				$('button.pv-s-profile-actions.pv-s-profile-actions--connect.pv-s-profile-actions').click();
+				setTimeout(function(){
+					$('button:contains(Send now)').eq(0).click();
+					setTimeout(function(){
+						window.close();
+					}, 2000)
+				}, 1000)
+			}, 1000)
+		}, 2000)
+	}
+	
+	// after invite is sent close the window.
+	if(window.location.href.indexOf('invite-sent') > -1){
+		console.log('should close window as invite has been sent')
+		window.close();
+	}
+	
 	
 	if (window.location.href.indexOf('search') > -1) {
 		console.log('on linkedin - stimulating click');
 		
 		var addFirstConnection = function(){
 			setTimeout(function () {
-				var nextConnectBtn = $(".search-result__actions--primary:enabled:contains(Connect)").eq(0);
+				var inMailBtn = $("button:contains(Connect)").eq(0);
+				if($("button:contains(Connect)").length == 0){
+					inMailBtn = $("button:contains(InMail)").eq(0);
+				}
+				
+				inMailBtn.html('Sent invite');
+				inMailBtn.prop("disabled", true);
+				var parentDiv = $(inMailBtn).parents('.search-result__wrapper');
+				var profileLink = $(parentDiv).find('a[data-control-name="search_srp_result"]').attr('href');
+				console.log('found profileLink', profileLink);
+				if(profileLink){
+					window.open('https://' +window.location.host + profileLink);
+				}
+				
+				
+				
 				// disable so we cant click on this user again
 				// click on this user;
-				nextConnectBtn.trigger("click");
-				nextConnectBtn.html('Sent invite');
-				nextConnectBtn.prop("disabled", true);
+				//nextConnectBtn.trigger("click");
+				//nextConnectBtn.html('Sent invite');
+				//nextConnectBtn.prop("disabled", true);
 				setTimeout(function () {
-					$(".button-primary-large.ml1").eq(0).trigger("click");
+					//$(".button-primary-large.ml1").eq(0).trigger("click");
 					
 					anyMoreConnections()
 					
@@ -25,7 +70,7 @@ $(document).ready(function () {
 			// wait until modal disappears
 			setTimeout(function () {
 				// if anymore connection opportunities on page then repeat
-				if($(".search-result__actions--primary:enabled:contains(Connect)").length > 0){
+				if($("button:contains(InMail)").length > 0 || $("button:contains(Connect)").length > 0){
 					// add the next connection
 					addFirstConnection();
 				} else {
@@ -59,7 +104,7 @@ $(document).ready(function () {
 			 var connectBtn =  parent.find('.button-secondary-small');
 			 connectBtn.trigger('click');
 			 connectBtn.html('Sent invite');
-			 //connectBtn.prop("disabled", true);
+			 console.log('sent an invite to a ', keyword);
 		});
 		//var element = elements.eq(0).parents('.mn-person-info')
 		//element.find('.button-secondary-small').trigger('click')
@@ -72,10 +117,11 @@ $(document).ready(function () {
 				scrollDownLots();
 				i++;
 			} else {
-				findWordRecruitAndAdd('Recruit');
-				findWordRecruitAndAdd('Recruitment');
-				findWordRecruitAndAdd('Recruiter');
-				findWordRecruitAndAdd('Talent');
+				findWordRecruitAndAdd('Radiographer');
+				findWordRecruitAndAdd('Speech Therapist');
+				findWordRecruitAndAdd('Dietician');
+				findWordRecruitAndAdd('Physiotherapist');
+				findWordRecruitAndAdd('Speech and Language');
 			}
 		}, 1000)
 	}
@@ -90,6 +136,10 @@ $(document).ready(function () {
 			scrollDownTimes(10);
 		}, (45 * 1000))
 		
+	}
+	
+	if(window.location.href.indexOf('search/results/people') > -1){
+		console.log('you are on the search results page');
 	}
 	
 	
