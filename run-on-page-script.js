@@ -3,6 +3,15 @@ console.log('outside of document.ready');
 $(document).ready(function () {
 	console.log('EXTENSION running on page');
 	var onProfilePage = false;
+
+
+    // Recruiter Search page // Add people to project
+	if(window.location.href.indexOf('/recruiter/smartsearch') > -1){
+		$('input[data-tracking-control-name="selectAllBtn"]').click();
+		$('button#project-bulk-action').trigger('click');
+	}
+
+
 	
 	
 	if(window.location.href.indexOf('/in/') > -1){
@@ -159,20 +168,38 @@ $(document).ready(function () {
 								    'operating',
 								    'Ortho',
 								    'ortho',
-								    'para'
+								    'para',
 								    'Paramedic',
 								    'Pod',
 								    'Prosthetist',
-								    'prosthetist'
+								    'prosthetist',
 								    'Prosthe',
 								    'prosthe',
 								    'anesthetist',
-								    'Anesthetist'
+								    'Anesthetist',
+								    'Maternity', 
+								    'Donor', 
+								    'Dietetic', 
+								    'Dental', 
+								    'Creative', 
+								    'Cardio', 
+								    'Phlebo', 
+								    'Optometr', 
+								    'Nutrition', 
+								    'Newborn',
+								    'care',
+								    'Care',
+								    'Dosimet',
+								    'dosimet'
 								    ]
-				while(let i = 0; (i<jobTitleList.length - 1); i++){
+
+				for(let i = 0; i<jobTitleList.length - 1; i++){
 					findWordRecruitAndAdd(jobTitleList[i]);
 				}
-				
+			    var $target = $('html,body');
+				$("html, body").animate({
+					scrollTop: 20
+				}, 1000);   
 
 				clearInterval(scrollDownInt);
 			}
