@@ -98,30 +98,83 @@ $(document).ready(function () {
 	}
 	
 	var findWordRecruitAndAdd = function(keyword){
-		var elements = $('.mn-person-info__occupation:contains('+ keyword + ')')
-		elements.each(function( index ) {
-			 var parent = $( this ).parents('.mn-person-info');
-			 var connectBtn =  parent.find('.button-secondary-small');
-			 connectBtn.trigger('click');
-			 connectBtn.html('Sent invite');
-			 console.log('sent an invite to a ', keyword);
-		});
-		//var element = elements.eq(0).parents('.mn-person-info')
-		//element.find('.button-secondary-small').trigger('click')
+		var elements = $('.pymk-card__occupation--card-layout:contains('+ keyword + ')');
+		var numberOfSent = 0;
+
+		$(elements).each(function(index){
+		   var connectBtn = $(this).parents('li').find('span:contains(Connect)');
+
+		   if(connectBtn.length > 0){
+		   	numberOfSent += 1;
+		   	connectBtn.html('sent invite');
+		    connectBtn.parents('button').trigger('click');
+		   }
+		})
+		if(numberOfSent > 0){
+			console.log('sent invites to ', numberOfSent, ' ', keyword, ' professionals');
+		}
+		
+		
 	}
 	
 	var scrollDownTimes = function(times){
 		var i = 0;
-		setInterval(function(){
+		var scrollDownInt = setInterval(function(){
 			if(i < times){
 				scrollDownLots();
 				i++;
 			} else {
-				findWordRecruitAndAdd('Radiographer');
-				findWordRecruitAndAdd('Speech Therapist');
-				findWordRecruitAndAdd('Dietician');
-				findWordRecruitAndAdd('Physiotherapist');
-				findWordRecruitAndAdd('Speech and Language');
+				var jobTitleList = ['Radiographer',
+								    'Speech Therapist',
+								    'Dietician',
+								    'Physiotherapist',
+								    'Speech and Language',
+								    'Radio',
+								    'RADIO',
+								    'radio',
+								    'speech',
+								    'Speech',
+								    'diet',
+								    'Diet',
+								    'Imagining',
+								    'Image',
+								    'sono',
+								    'Sono',
+								    'image',
+								    'Physio',
+								    'Occupational',
+								    'midwife',
+								    'Midwife',
+								    'mid-wife',
+								    'Mid-wife',
+								    'Diagnostic',
+								    'diagnostic',
+								    'Music',
+								    'Drama',
+								    'practitioner',
+								    'Practitioner',
+								    'Operating',
+								    'Theatre',
+								    'theatre',
+								    'operating',
+								    'Ortho',
+								    'ortho',
+								    'para'
+								    'Paramedic',
+								    'Pod',
+								    'Prosthetist',
+								    'prosthetist'
+								    'Prosthe',
+								    'prosthe',
+								    'anesthetist',
+								    'Anesthetist'
+								    ]
+				while(let i = 0; (i<jobTitleList.length - 1); i++){
+					findWordRecruitAndAdd(jobTitleList[i]);
+				}
+				
+
+				clearInterval(scrollDownInt);
 			}
 		}, 1000)
 	}
